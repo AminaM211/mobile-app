@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/ProductCard.js';
 
 import MediumRoastImage from '../assets/black-coffee-package.png';
 import VanillaBlendImage from '../assets/pink-coffee-package.png';
