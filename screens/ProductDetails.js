@@ -1,51 +1,108 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import ProductCard from '../components/ProductCard.js';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
-import MediumRoastImage from '../assets/black-coffee-package.png';
-import VanillaBlendImage from '../assets/pink-coffee-package.png';
-import DecafRoastBlendImage from '../assets/blue-package.png';
-import EspressoRoastBlendImage from '../assets/brown_tinted_coffee_package.png';
+const ProductDetails = ({ route }) => {
+  const { title, description, price, image} = route.params;
+  const [quantity, setQuantity] = useState(1);
+  
+  const increaseQuantity = () => setQuantity(quantity + 1);
+  const decreaseQuantity = () => quantity > 1 && setQuantity(quantity - 1);
+  const totalPrice = parseFloat(price) * quantity;
 
-const products = [
-  { id: 1, name: 'Medium Roast Blend', price: '€19.95', image: MediumRoastImage },
-  { id: 2, name: 'Vanilla Blend', price: '€19.95', image: VanillaBlendImage },
-  { id: 3, name: 'Decaf Roast Blend', price: '€19.95', image: DecafRoastBlendImage },
-  { id: 4, name: 'Espresso Roast Blend', price: '€19.95', image: EspressoRoastBlendImage },
-];
-
-const HomeScreen = ( { navigation } ) => {
-    return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>details</Text>
-      {products.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProductDetails')}>
-        <Text style={styles.buttonText}>View All Products</Text>
+  return (
+    <View style={styles.container}>
+      <Image source={image} style={styles.image} />
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.price}>€{price}</Text>
+      <View style={styles.quantityContainer}>
+        <TouchableOpacity onPress={decreaseQuantity} style={styles.quantityButton}>
+          <Text style={styles.quantityText}>-</Text>
         </TouchableOpacity>
-    </ScrollView>
+        <Text style={styles.quantity}>{quantity}</Text>
+        <TouchableOpacity onPress={increaseQuantity} style={styles.quantityButton}>
+          <Text style={styles.quantityText}>+</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.totalPrice}>Total: €{totalPrice.toFixed(2)}</Text>
+      <StatusBar style="auto" />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: 20,
-        padding: 20,
-        backgroundColor: 'rgba(138, 184, 134, 0.32)',
-      },
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+    marginBottom: 10,
+  },
   title: {
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  description: {
+    fontSize: 16,
+    color: "#666",
+    marginVertical: 5,
+    textAlign: 'center',
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#3e2d22",
+    textAlign: 'center',
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    justifyContent: 'center',
+  },
+  quantityButton: {
+    backgroundColor: "#bea395",
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityText: {
+    color: '#fff',
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+  },
+  quantity: {
+    fontSize: 20,
+    margin: 20,
+  },
+  totalPrice: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginTop: 0,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: "#375c14",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 15,
     marginTop: 20,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
-
 
 export default ProductDetails;
