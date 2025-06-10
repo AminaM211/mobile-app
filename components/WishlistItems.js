@@ -1,11 +1,11 @@
-let items = []; 
+let items = [];
 
 export const getWishlist = () => items;
 
-export const addToWishlist = (item) => {
-  if (!items.find(i => i.key === item.key)) items.push(item);
+export const addToWishlist = item => {
+  if (!items.find(i => i.id === item.id)) items.push(item); 
 };
 
-export const removeFromWishlist = (key) => {
-  items = items.filter(i => i.key !== key);
+export const removeFromWishlist = id => {
+  items = items.filter(i => i.id !== id);                
 };
