@@ -1,18 +1,21 @@
+import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const ProductCard = ({ title, description, price, image, onPress, showButton = true }) => (
+const ProductCard = ({ title, description, price, image, onPress, showButton = true }) => {
+  const navigation = useNavigation();
+  return (  
   <View style={styles.card}>
+  <TouchableOpacity style={styles.button} onPress={onPress}>
     <Image source={image} style={styles.image} />
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.description}>{description}</Text>
     <Text style={styles.price}>{price}</Text>
-    {showButton && (
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.buttonText}>Add To Cart</Text>
-      </TouchableOpacity>
-    )}
+  </TouchableOpacity>
   </View>
-);
+
+  );
+};
 
 const styles = StyleSheet.create({
     card: {
@@ -45,19 +48,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#3e2d22",
         textAlign: 'center',
-    },
-    button: {
-        backgroundColor: "#375c14",
-        paddingVertical: 12,
-        paddingHorizontal: 30,
-        borderRadius: 15,
-        marginTop: 15,
-        alignItems: "center",
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
     },
 });
 
