@@ -61,9 +61,17 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+
       <TouchableOpacity onPress={() => navigation.navigate('Onze Blog')}>
         <Text style={{fontSize: 16 }}>Blog Posts</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ShoppingCart')}>
+        <Text style={{fontSize: 16 }}>cart</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
+        <Text style={{fontSize: 16 }}>wishlist</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>Alle Producten</Text>
       <TextInput
         style={styles.search}
@@ -109,7 +117,7 @@ const HomeScreen = ({ navigation }) => {
               smallDescription={product.smallDescription}
               price={`€${product.price}`}
               image={{ uri: product.image.url }}
-              onPress={() => navigation.navigate('ProductDetails', product)}
+              onPress={() => navigation.navigate('Product', product)}
             />
           ))}
         </View>

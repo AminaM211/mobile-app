@@ -1,15 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { use } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from "./screens/HomeScreen.js";
 import ProductDetails from "./screens/ProductDetails.js";
 import BlogPosts from "./screens/BlogPosts.js";
 import BlogPostDetails from "./screens/BlogPostDetails.js";
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import Wishlist from "./screens/Wishlist.js";
 
 const Stack = createStackNavigator();
-
  
 export default function App() {
   return (
@@ -19,7 +17,8 @@ export default function App() {
         <Stack.Screen name="Product" component={ProductDetails} />
         <Stack.Screen name="Onze Blog" component={BlogPosts} />
         <Stack.Screen name="Artikel" component={BlogPostDetails} />
+        <Stack.Screen name="Wishlist" component={Wishlist} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+      }
