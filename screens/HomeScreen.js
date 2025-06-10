@@ -61,17 +61,6 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Onze Blog')}>
-        <Text style={{fontSize: 16 }}>Blog Posts</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('ShoppingCart')}>
-        <Text style={{fontSize: 16 }}>cart</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
-        <Text style={{fontSize: 16 }}>wishlist</Text>
-      </TouchableOpacity>
-
       <Text style={styles.title}>Alle Producten</Text>
       <TextInput
         style={styles.search}
@@ -117,7 +106,7 @@ const HomeScreen = ({ navigation }) => {
               smallDescription={product.smallDescription}
               price={`€${product.price}`}
               image={{ uri: product.image.url }}
-              onPress={() => navigation.navigate('Product', product)}
+              onPress={() => navigation.navigate('Product Details', product)}
             />
           ))}
         </View>
@@ -135,12 +124,16 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingBottom: 40,
+    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
   },
+
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 20,
+    gap: 10,
   },
   title: {
     fontSize: 28,
