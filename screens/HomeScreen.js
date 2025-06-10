@@ -61,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('BlogPosts')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Onze Blog')}>
         <Text style={{fontSize: 16 }}>Blog Posts</Text>
       </TouchableOpacity>
       <Text style={styles.title}>Alle Producten</Text>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   search: {
     height: 50,
-    borderColor: '#ccc',
+    borderColor: '#000',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     width: '45%',
     marginBottom: 30,
   },
+
 });
 
 export default HomeScreen;

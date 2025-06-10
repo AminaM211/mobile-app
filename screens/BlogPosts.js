@@ -14,7 +14,6 @@ const BlogScreen = ({ navigation }) => {
 
   
   useEffect(() => {
-    // ⬇︎ Vervang {collectionId} door je Webflow-collection-ID voor blog-posts
     fetch('https://api.webflow.com/v2/sites/67b321ba94be4bec1017dd3e/collections/67bc7fca8b71ae1251ff919d/items', {
       headers: {
         Authorization : 'Bearer d5e27f5b9954bc3249d4377915a4fb6119b8701c0e22d43073be20b756fc4c79',
@@ -34,29 +33,26 @@ const BlogScreen = ({ navigation }) => {
           }),
           rawDate    : new Date(item.createdOn),
           image      : { uri: item.fieldData['main-image']?.url || '' },
-          
+          fullText   : item.fieldData['post-body'],
+    
         })));
       })
       .catch(console.error);
   }, []);
 
-  /* ---------- filters ---------- */
   const filtered = posts.filter(p => {
     const matchCat   = selectedCategory ? p.category === selectedCategory : true;
     const matchSearch= p.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchCat && matchSearch;
   });
 
-  /* ---------- sorteren ---------- */
   const sorted = [...filtered].sort((a, b) => {
     if (sortOption === 'date-desc') return b.rawDate - a.rawDate;
     if (sortOption === 'date-asc')  return a.rawDate - b.rawDate;
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>
-      <Text style={styles.title}>Onze Blog</Text>
-    
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>    
       <TextInput
         style={styles.search}
         placeholder="Zoek artikels..."
@@ -98,7 +94,7 @@ const BlogScreen = ({ navigation }) => {
             description={post.description}
             date={post.date}
             image={post.image}
-            onPress={() => navigation.navigate('BlogDetails', post)}
+            onPress={() => navigation.navigate('Artikel', post)}
           />
         ))}
       </View>
