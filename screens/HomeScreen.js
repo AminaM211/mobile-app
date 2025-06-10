@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Platform } from 'react-native';
 import ProductCard from '../components/ProductCard';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+const categoryNames = {
+  "": "Alle Categorieën",
+  "68415e959e0f15c79d1b54d2": "Decaf",
+  "68415e42bdf40cb91bb04a6d": "Caffeinated",
+};
 
 const HomeScreen = ({ navigation }) => {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('price-asc'); // default sort by price ascending
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://api.webflow.com/v2/sites/67b321ba94be4bec1017dd3e/products', {
@@ -27,18 +39,67 @@ const HomeScreen = ({ navigation }) => {
             smallDescription: item.product.fieldData['made-with'],
             price: (item.skus[0]?.fieldData?.price?.value || 0) / 100,
             image: { url: item.skus[0]?.fieldData?.['main-image']?.url || '' },
+            category: categoryNames[item.product.fieldData.category[0]] || 'Onbekend',
           }))
         );
       })
-      .catch((err) => console.error('API fout:', err));
+      .catch(console.error);
   }, []);
 
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
+    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortOption === 'price-asc') return a.price - b.price;
+    if (sortOption === 'price-desc') return b.price - a.price;
+    if (sortOption === 'name-asc') return a.title.localeCompare(b.title);
+    if (sortOption === 'name-desc') return b.title.localeCompare(a.title);
+  });
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Alle producten</Text>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Alle Producten</Text>
+      <TextInput
+        style={styles.search}
+        placeholder="Zoek producten..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
+      <View style={styles.pickerCard}>
+        <DropDownPicker
+          open={sortDropdownOpen}
+          value={sortOption}
+          items={[
+            { label: 'Prijs laag naar hoog', value: 'price-asc' },
+            { label: 'Prijs hoog naar laag', value: 'price-desc' },
+            { label: 'Sorteer van A-Z', value: 'name-asc' },
+            { label: 'Sorteer van Z-A', value: 'name-desc' },
+          ]}
+          setOpen={setSortDropdownOpen}
+          setValue={setSortOption}
+          style={styles.picker}
+        />
+        <DropDownPicker
+          open={categoryDropdownOpen}
+          value={selectedCategory}
+          items={[
+            { label: 'Alles in Koffie', value: '' },
+            ...[...new Set(products.map((p) => p.category))].map((category) => ({
+              label: category,
+              value: category,
+            })),
+          ]}
+          setOpen={setCategoryDropdownOpen}
+          setValue={setSelectedCategory}
+          style={styles.picker}
+        />
+      </View>
+      <View contentContainerStyle={styles.scrollContainer}>
         <View style={styles.row}>
-          {products.map((product) => (
+          {sortedProducts.map((product) => (
             <ProductCard
               key={product.id}
               title={product.title}
@@ -49,8 +110,8 @@ const HomeScreen = ({ navigation }) => {
             />
           ))}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -75,6 +136,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+  },
+  picker: {
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    flex: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+  },
+  search: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  pickerCard: {
+    flexDirection: 'row',
+    gap: 35,
+    width: '45%',
+    marginBottom: 30,
   },
 });
 
