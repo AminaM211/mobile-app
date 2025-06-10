@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Platform, TouchableOpacity } from 'react-native';
 import ProductCard from '../components/ProductCard';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -61,6 +61,9 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('BlogPosts')}>
+        <Text style={{fontSize: 16 }}>Blog Posts</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Alle Producten</Text>
       <TextInput
         style={styles.search}
@@ -110,7 +113,7 @@ const HomeScreen = ({ navigation }) => {
             />
           ))}
         </View>
-      </View>
+      </View>       
     </ScrollView>
   );
 };

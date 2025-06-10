@@ -2,15 +2,20 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const ProductCard = ({ title, smallDescription, price, image, onPress, showButton = true }) => {
+const BlogCard = ({ title, description, date, image, onPress = true }) => {
   const navigation = useNavigation();
   return (  
   <View style={styles.card}>
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <Image source={image} style={styles.image} />
+    <View style={styles.div}>
+    <Text style={styles.date}>{date}</Text>
     <Text style={styles.title}>{title}</Text>
-    <Text style={styles.smallDescription}>{smallDescription}</Text>
-    <Text style={styles.price}>{price}</Text>
+    <Text style={styles.description}>{description}</Text>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Read more →</Text>
+    </View>
+    </View>
   </TouchableOpacity>
   </View>
 
@@ -19,37 +24,35 @@ const ProductCard = ({ title, smallDescription, price, image, onPress, showButto
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "rgba(240, 221, 197, 0.60)",
+        backgroundColor: "#f4f4f4",
         borderRadius: 10,
-        width: "70%",
-        padding: 20,
-        alignItems: "center",
-        marginBottom: 15,
+        width: "80%",
+        marginBottom: 10,
     },
-    smallDescription : {
+    smallDescription: {
         fontSize: 14,
-        marginVertical: 7,
-        marginHorizontal: 10,
-        textAlign: 'center',
+    },
+
+    div: {
+        padding: 25,
     },
 
     image: {
-        width: 200,
+        width: "100%",
         height: 200,
-        borderRadius: 8,
-        marginBottom: 10,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        marginBottom: 0,
     },
     title: {
         fontSize: 20,
         fontWeight: "bold",
         marginTop: 10,
-        textAlign: 'center',
     },
     description: {
         fontSize: 15,
         color: "#666",
         marginVertical: 5,
-        textAlign: 'center',
     },
     price: {
         fontSize: 18,
@@ -59,4 +62,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProductCard;
+export default BlogCard;
