@@ -1,22 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import ProductCard from '../components/ProductCard';
+import { ScrollView } from 'react-native';
+
 
 const ProductDetails = ({ route }) => {
-  const { title, description, price, image} = route.params;
+  const { title, description, smallDescription, price, image} = route.params;
   const [quantity, setQuantity] = useState(1);
   
   const increaseQuantity = () => setQuantity(quantity + 1);
   const decreaseQuantity = () => quantity > 1 && setQuantity(quantity - 1);
+  const addToCart = () => {
+    // product added to cart
+  };
   const totalPrice = parseFloat(price) * quantity;
 
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
+      <Image source={{ uri: image.url }} style={styles.image} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
+      <Text style={styles.smallDescription}>{smallDescription}</Text>
       <Text style={styles.price}>€{price}</Text>
-      
       <View style={styles.quantityContainer}>
         <TouchableOpacity onPress={decreaseQuantity} style={styles.quantityButton}>
           <Text style={styles.quantityText}>-</Text>
@@ -27,7 +33,17 @@ const ProductDetails = ({ route }) => {
         </TouchableOpacity>
       </View>
       <Text style={styles.totalPrice}>Total: €{totalPrice.toFixed(2)}</Text>
+      <TouchableOpacity onPress={addToCart} style={styles.button}>
+          <Text style={styles.quantityText}>Add To Cart</Text>
+        </TouchableOpacity>
       <StatusBar style="auto" />
+
+      {/* 
+      <Text style={styles.title}>Shop Similar Products</Text>
+      <View style={styles.scrollContainer}>
+      </View> 
+      */}
+
     </View>
   );
 };
@@ -69,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quantityButton: {
-    backgroundColor: "#bea395",
+    backgroundColor: "#375c14",
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 5,
@@ -95,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#375c14",
     paddingVertical: 12,
     paddingHorizontal: 30,
-    borderRadius: 15,
+    borderRadius: 10,
     marginTop: 20,
     alignItems: "center",
   },
