@@ -3,6 +3,14 @@ import { StyleSheet, Text, View, ScrollView, TextInput, Platform, TouchableOpaci
 import ProductCard from '../components/ProductCard';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+const toast = message => {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  } else {
+    Alert.alert(message);
+  }
+};
+
 const categoryNames = {
   "": "Alle Categorieën",
   "68415e959e0f15c79d1b54d2": "Decaf",
@@ -59,6 +67,7 @@ const HomeScreen = ({ navigation }) => {
     if (sortOption === 'name-desc') return b.title.localeCompare(a.title);
   });
 
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Alle Producten</Text>
@@ -72,6 +81,7 @@ const HomeScreen = ({ navigation }) => {
         <DropDownPicker
           open={sortDropdownOpen}
           value={sortOption}
+          listMode="MODAL"
           items={[
             { label: 'Prijs laag naar hoog', value: 'price-asc' },
             { label: 'Prijs hoog naar laag', value: 'price-desc' },
@@ -85,6 +95,7 @@ const HomeScreen = ({ navigation }) => {
         <DropDownPicker
           open={categoryDropdownOpen}
           value={selectedCategory}
+          listMode="MODAL"
           items={[
             { label: 'Alles in Koffie', value: '' },
             ...[...new Set(products.map((p) => p.category))].map((category) => ({
@@ -101,7 +112,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           {sortedProducts.map((product) => (
             <ProductCard
-              key={product.id}
+              id={product.id}
               title={product.title}
               smallDescription={product.smallDescription}
               price={`€${product.price}`}
@@ -134,6 +145,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 10,
+    marginBottom: 100,
   },
   title: {
     fontSize: 28,

@@ -1,7 +1,15 @@
 // screens/ProductDetails.js
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Platform, ToastAndroid, Alert } from 'react-native';
+
+const toast = (message) => {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  } else {
+    Alert.alert(message);
+  }
+};
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,6 +17,7 @@ import {
   addToWishlist,
   removeFromWishlist,
   getWishlist,
+  addToCart,
 } from '../components/WishlistItems';
 
 
@@ -24,11 +33,16 @@ const ProductDetails = ({ route }) => {
   const [liked, setLiked] = useState(
     !!getWishlist().find(i => i.id === id)
   );
+
+  const onAddCart = () => {
+    addToCart({ id, title, price: +price, image: { uri: image.url }, smallDescription });
+    navigation.navigate('Cart');
+  };
   
-  /* toggle-handler */
   const toggleWishlist = () => {
     if (liked) {
-      removeFromWishlist(id);      // haal eruit
+      removeFromWishlist(id); 
+      toast('Removed from wishlist');
     } else {
       addToWishlist({
         id,
@@ -36,6 +50,7 @@ const ProductDetails = ({ route }) => {
         price: parseFloat(price),
         image: { uri: image.url },
       });
+      toast('Added to wishlist');
     }
     setLiked(!liked);
   };
@@ -68,14 +83,17 @@ const ProductDetails = ({ route }) => {
         </TouchableOpacity>
       </View>
 
+      <View style={ styles.foot }>
       <View style={styles.sum}>
       <Text style={styles.total}>Total: €{total.toFixed(2)}</Text>
 
-      <TouchableOpacity style={styles.cartBtn}>
+      <TouchableOpacity style={styles.cartBtn} onPress={onAddCart}>
         <Image style={styles.btnImgCart} source={require('../assets/cart.png')}/>
         <Text style={styles.btnTxt}>Add to Cart</Text>
       </TouchableOpacity>
       </View>
+      </View>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -84,24 +102,49 @@ const ProductDetails = ({ route }) => {
 const styles = StyleSheet.create({
   container:   { 
     flex: 1, 
-    padding: 20, 
     alignItems: 'center'
    },
+
+   foot: {
+    flex: 1,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    borderRadius: 15,
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
   image:       { 
-    width: 300, 
-    height: 300, 
-    marginTop: 20
+    width: 210, 
+    height: 250, 
+    marginTop: 40
   },
   title:       { 
     fontSize: 24, 
     fontWeight: 'bold', 
     textAlign: 'center', 
-    marginBottom: 10 
+    marginBottom: 10,
+    marginTop: 30,
   },
   description: { 
     fontSize: 16, 
     textAlign: 'center', 
-    marginVertical: 5 
+    marginVertical: 5, 
+    marginHorizontal: 40,
   },
   smallDescription: { 
     fontSize: 14, 
@@ -186,7 +229,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 30,
     alignItems: 'center',
     paddingHorizontal: 10,
   },

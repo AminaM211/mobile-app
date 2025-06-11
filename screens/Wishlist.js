@@ -24,7 +24,7 @@ const Wishlist = () => {
           style={{ width: 70, height: 82, marginBottom: 20 }}
         />
         <Text style={styles.emptyTxt}>Je wishlist is leeg</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Products')}>
           <Text style={styles.emptyBtn}>Bekijk producten</Text>
         </TouchableOpacity>
       </View>
@@ -35,7 +35,7 @@ const Wishlist = () => {
     <ScrollView contentContainerStyle={styles.container}>
       {items.map(item => (
         <View id={item.id} style={styles.card}>
-        <TouchableOpacity onPress={() => navigation.navigate('Product', item)}>
+        <TouchableOpacity onPress={() => navigation.navigate('Product Details', item)}>
         {item.image?.uri && <Image source={item.image} style={styles.img} />}
         </TouchableOpacity>
         <Text style={styles.title}>{item.title}</Text>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center' 
   },
   emptyTxt:{ 
-    fontSize: 21, 
+    fontSize: 18, 
     // fontWeight: 'bold',
   },
 
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 5,
     backgroundColor: '#fff',
-    height: 220,
+    height: 240,
     borderRadius: 8,
     padding: 12,
     elevation: 2,
@@ -106,13 +106,14 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     marginBottom: 10,
+    paddingTop: 5,
   },
   remove:{ 
     fontSize: 30, 
     color: '#c00', 
     paddingLeft: 8, 
     right: 0,
-    top: -205,
+    top: -220,
     zIndex: 999,
     position: 'absolute',
   },

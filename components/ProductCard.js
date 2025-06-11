@@ -1,11 +1,58 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Pressable, Platform, ToastAndroid, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  getWishlist,
+  addToCart,
+} from '../components/WishlistItems';
 
-const ProductCard = ({ title, smallDescription, price, image, onPress, showButton = true }) => {
+const toast = (message) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      Alert.alert(message);
+    }
+  };
+
+const ProductCard = ({ id, title, smallDescription, price, image, onPress, showButton = true }) => {
   const navigation = useNavigation();
+
+  const [liked, setLiked] = useState(
+    !!getWishlist().find(i => i.id === id)
+  );
+
+  const onAddCart = () => {
+      addToCart({ id, title, price: +price, image: { uri: image.url }, smallDescription });
+      navigation.navigate('Cart');
+    };
+    
+    const toggleWishlist = () => {
+      if (liked) {
+        removeFromWishlist(id); 
+        toast('Removed from wishlist');
+      } else {
+        addToWishlist({
+          id,
+          title,
+          price: parseFloat(price),
+          image: { uri: image.url },
+        });
+        toast('Added to wishlist');
+      }
+      setLiked(!liked);
+    };
   return (  
   <View style={styles.card}>
+    <Pressable style={styles.wishBtn} onPress={toggleWishlist}>
+        <MaterialCommunityIcons
+          name={liked ? 'heart' : 'heart-outline'}
+          size={25}
+          color={liked ? 'red' : 'black'}
+        />
+      </Pressable>
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <Image source={image} style={styles.image} />
     <Text style={styles.title}>{title}</Text>
@@ -63,6 +110,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#2a4b10",
         textAlign: 'center',
+    },
+    wishBtn: {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        zIndex: 1,
     },
 });
 

@@ -5,12 +5,12 @@ import BlogCard from '../components/BlogCard';
 
 
 const BlogScreen = ({ navigation }) => {
-  const [posts, setPosts]                 = useState([]);
-  const [selectedCategory, setCategory]   = useState('');
-  const [searchQuery, setSearchQuery]     = useState('');
-  const [sortOption, setSortOption]       = useState('date-desc'); // default: nieuwste eerst
-  const [catOpen, setCatOpen]             = useState(false);
-  const [sortOpen, setSortOpen]           = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [selectedCategory, setCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('date-desc'); // default: nieuwste eerst
+  const [catOpen, setCatOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
 
   
   useEffect(() => {
@@ -64,6 +64,7 @@ const BlogScreen = ({ navigation }) => {
         <DropDownPicker
           open={sortOpen}
           value={sortOption}
+          listMode="MODAL"
           items={[
             { label: 'Nieuwste eerst', value: 'date-desc' },
             { label: 'Oudste eerst',   value: 'date-asc'  }
@@ -76,6 +77,7 @@ const BlogScreen = ({ navigation }) => {
         <DropDownPicker
           open={catOpen}
           value={selectedCategory}
+          listMode="MODAL"
           items={[
             { label: 'Alle categorieën', value: '' },
             ...[...new Set(posts.map(p => p.category))].map(c => ({ label: c, value: c })),

@@ -7,6 +7,8 @@ const Finder = ({ navigation }) => {
             source={require('../assets/bg.png')} // Replace with your background image path
             style={styles.background}
         >
+        <Text style={styles.h1}>Welcome</Text>
+
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}
@@ -38,6 +40,16 @@ const Finder = ({ navigation }) => {
                     />
                     <Text style={styles.buttonText}>Wishlist</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Cart')}
+                >
+                    <Image
+                        source={require('../assets/cart.png')}
+                        style={{ width: 40, height: 40 }}
+                    />
+                    <Text style={styles.buttonText}>Cart</Text>
+                </TouchableOpacity>
             </View>
         </ImageBackground>
     );
@@ -55,6 +67,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignContent: 'center',
+        gap: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -71,15 +87,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        marginTop: 20,
-        shadowColor: '#375c14',
+        shadowColor: '#fff',
         shadowOffset: {
-            width: 7,
-            height: 7,
+            width: 3,
+            height: 3,
         },
-        shadowOpacity: 0.3,
+        shadowOpacity: 1,
         shadowRadius: 1,
         elevation: 5,
+        borderWidth: 1,
+        borderColor: '#fff',
+        opacity: 0.95,
+        
     },
     buttonText: {
         color: '#fff',
@@ -87,6 +106,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         paddingTop: 10,
+    },
+    h1: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        position: 'absolute',
+        top: 130,
+        //cute font
+        fontFamily: 'roboto',
+        letterSpacing: 2,
     },
 });
 
