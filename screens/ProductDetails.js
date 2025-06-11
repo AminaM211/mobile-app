@@ -1,15 +1,6 @@
-// screens/ProductDetails.js
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Platform, ToastAndroid, Alert } from 'react-native';
-
-const toast = (message) => {
-  if (Platform.OS === 'android') {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  } else {
-    Alert.alert(message);
-  }
-};
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -20,6 +11,14 @@ import {
   addToCart,
 } from '../components/WishlistItems';
 
+
+const toast = (message) => {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  } else {
+    Alert.alert(message);
+  }
+};
 
 const ProductDetails = ({ route }) => {
   const navigation = useNavigation();

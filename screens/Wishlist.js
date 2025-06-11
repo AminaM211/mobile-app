@@ -34,7 +34,7 @@ const Wishlist = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {items.map(item => (
-        <View id={item.id} style={styles.card}>
+        <View key={item.id} style={styles.card}>
         <TouchableOpacity onPress={() => navigation.navigate('Product Details', item)}>
         {item.image?.uri && <Image source={item.image} style={styles.img} />}
         </TouchableOpacity>

@@ -112,6 +112,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           {sortedProducts.map((product) => (
             <ProductCard
+              key={product.id} // Add the unique key prop here
               id={product.id}
               title={product.title}
               smallDescription={product.smallDescription}
