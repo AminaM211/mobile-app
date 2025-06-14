@@ -1,21 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import {
-  View, Text, FlatList, TouchableOpacity, Image, StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import { getCart, incrQty, decrQty, removeFromCart} from '../components/WishlistItems';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Cart() {
   const [items, setItems] = useState(getCart());
   const navigation = useNavigation();
-  const refresh = () => setItems([...getCart()]);
+  const refresh = () => setItems([...getCart()]); //refresht de cart door een nieuwe array te maken en de state te updaten
   
-
-  const total = useMemo(
-    () => items.reduce((s, i) => s + i.price * i.qty, 0),
-    [items]
+ 
+  // { TOTALE PRIJS BEREKENEN }
+  const total = useMemo( // berekent de totale prijs van de items in de cart
+    () => items.reduce((s, i) => s + i.price * i.qty, 0), // telt de prijs van elk item * de hoeveelheid allemaal samen op 
+    [items] // enkel als items verandert
   );
 
+  // { EMPTY STATE SCREEN ALS ER GEEN ITEMS IN CART ZIJN }
   if (items.length === 0) {
     return (
       <View style={styles.empty}>
@@ -31,6 +31,7 @@ export default function Cart() {
     );
   }
 
+  // { RIJEN VAN DE ITEMS IN CART }
   const Row = ({ item }) => (
     <View style={styles.row}>
       <Image source={item.image} style={styles.img} />
@@ -40,7 +41,7 @@ export default function Cart() {
         <Text style={styles.price}>€ {item.price.toFixed(2)}</Text>
         <View style={styles.qtyRow}>
           <TouchableOpacity onPress={() => { decrQty(item.id); refresh(); }}>
-            <Text style={styles.qtyBtn}>-</Text>
+            <Text style={styles.qtyBtn}>—</Text>
           </TouchableOpacity>
           <Text style={styles.qty}>{item.qty}</Text>
           <TouchableOpacity onPress={() => { incrQty(item.id); refresh(); }}>
@@ -58,8 +59,7 @@ export default function Cart() {
     </View>
   );
 
-  return (
-    
+  return (  
     <View style={ styles.foot }>
       <FlatList data={items} keyExtractor={i => i.id} renderItem={Row} />
       <View style={styles.footer}>
@@ -165,10 +165,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    lineHeight: 23,
-    
+    lineHeight: 24,
   },
-  qtyTxt:      { 
+  qtyTxt: { 
     color: '#fff', 
     fontSize: 16, 
     fontWeight: 'bold',

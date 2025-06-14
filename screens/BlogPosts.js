@@ -5,11 +5,11 @@ import BlogCard from '../components/BlogCard';
 
 
 const BlogScreen = ({ navigation }) => {
-  const [posts, setPosts] = useState([]);
-  const [selectedCategory, setCategory] = useState('');
+  const [posts, setPosts] = useState([]); // opgeladen posts opslagen in een array
+  const [selectedCategory, setCategory] = useState(''); // bewaart welke categorie je kiest
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('date-desc'); 
-  const [catOpen, setCatOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false); // dropdown start op dicht
   const [sortOpen, setSortOpen] = useState(false);
 
   
@@ -23,43 +23,48 @@ const BlogScreen = ({ navigation }) => {
       .then(res => res.json())
       .then(data => {
         if (!data.items) return console.error("Geen 'items' in response:", data);
-
+        // nadat de data is opgehaald, stop je de objecten in een array setPosts, 
+        // zodat `posts` die array wordt en het scherm de blogCards kan laten zien
         setPosts(data.items.map(item => ({
           id         : item._id,
           title      : item.fieldData.name,
           description: item.fieldData['post-summary'],       
           date       : new Date(item.createdOn).toLocaleDateString('nl-BE', {
-            day: '2-digit', month: 'short', year: 'numeric'
+            day: '2-digit', month: 'short', year: 'numeric' // data in NL-BE formaat
           }),
-          rawDate    : new Date(item.createdOn),
-          image      : { uri: item.fieldData['main-image']?.url || '' },
+          rawDate    : new Date(item.createdOn), // voor sortering
+          image      : { uri: item.fieldData['main-image']?.url || '' }, 
           fullText   : item.fieldData['post-body'],
-    
+          category  : item.fieldData.category?.[0] || '',
+
         })));
       })
       .catch(console.error);
   }, []);
 
   const filtered = posts.filter(p => {
-    const matchCat   = selectedCategory ? p.category === selectedCategory : true;
+    const matchCat   = selectedCategory ? p.category === selectedCategory : true; // Als er een categorie gekozen is, houd alleen de posts met diezelfde categorie; anders toon alle posts.
     const matchSearch= p.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchCat && matchSearch;
   });
 
+  // maakt eerst een kopie van filtered, en sorteert die op datum
   const sorted = [...filtered].sort((a, b) => {
     if (sortOption === 'date-desc') return b.rawDate - a.rawDate;
     if (sortOption === 'date-asc')  return a.rawDate - b.rawDate;
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>    
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>   
+    {/*  SEARCH BAR  */}
       <TextInput
         style={styles.search}
         placeholder="Zoek artikels..."
         value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
+        onChangeText={setSearchQuery} // elke keer je in het zoekveld typt,geeft die de nieuwe tekst door aan setSearchQuery, waardoor de zoek-state direct wordt bijgewerkt.
 
+      />
+    {/*  SORTEREN  */}
       <View style={styles.pickerRow}>
         <DropDownPicker
           open={sortOpen}
@@ -69,25 +74,28 @@ const BlogScreen = ({ navigation }) => {
             { label: 'Newest first', value: 'date-desc' },
             { label: 'Oldest first',   value: 'date-asc'  }
           ]}
-          setOpen={setSortOpen}
-          setValue={setSortOption}
+          setOpen={setSortOpen} // open of dicht
+          setValue={setSortOption} // zet de waarde van de dropdown
           style={styles.picker}
         />
 
+    {/*  CATEGORIEEN  */}
         <DropDownPicker
           open={catOpen}
           value={selectedCategory}
-          listMode="MODAL"
+          listMode="MODAL" 
           items={[
             { label: 'Alle categorieën', value: '' },
-            ...[...new Set(posts.map(p => p.category))].map(c => ({ label: c, value: c })),
-          ]}
+            ...[...new Set(posts.map(p => p.category))].map(c => ({ label: c, value: c })), // categorieën uit posts halen 
+          // en een array van objecten maken in label en value formaat voor de dropdown
+          ]} 
           setOpen={setCatOpen}
           setValue={setCategory}
           style={styles.picker}
         />
       </View>
 
+      {/*  BLOG CARDS  */}
       <View style={styles.row}>
         {sorted.map((post, index) => (
           <BlogCard

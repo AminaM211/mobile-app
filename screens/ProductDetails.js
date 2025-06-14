@@ -6,8 +6,8 @@ import { Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { addToWishlist, removeFromWishlist, getWishlist, addToCart} from '../components/WishlistItems';
 
-
-const toast = (navigation) => {
+// toast functie voor een pop up dat het product is toegevoegd aan de winkelwagen
+const toast = (navigation) => { 
     Alert.alert(
       'Added to your cart',       
       '',                        
@@ -28,15 +28,20 @@ const ProductDetails = ({ route }) => {
   const decrease = () => setQuantity(q => (q > 1 ? q - 1 : q));
   const total    = parseFloat(price) * quantity;
 
-  const [liked, setLiked] = useState(
-    !!getWishlist().find(i => i.id === id)
-  );
-
+  // functie om het product toe te voegen aan de winkelwagen
+  // en de toast te tonen
   const onAddCart = () => {
     addToCart({ id, title, price: +price, image: { uri: image.url }, smallDescription });
     toast(navigation);
   };
   
+    // check of het product al in de wishlist staat
+    const [liked, setLiked] = useState(
+      !!getWishlist().find(i => i.id === id)
+    );
+
+  // functie om het product toe te voegen of te verwijderen van de wishlist
+  // en de liked state bij te werken
   const toggleWishlist = () => {
     if (liked) {
       removeFromWishlist(id); 
@@ -54,15 +59,14 @@ const ProductDetails = ({ route }) => {
   return (
     <View style={styles.container}>
       <Pressable style={styles.wishBtn} onPress={toggleWishlist}>
-        <MaterialCommunityIcons
+        <MaterialCommunityIcons // Icon voor de wishlist
           name={liked ? 'heart' : 'heart-outline'}
           size={35}
           color={liked ? 'red' : 'black'}
         />
       </Pressable>
 
-
-      <Image source={{ uri: image.url }} style={styles.image} />
+      <Image source={image?.url ? { uri: image.url } : image} style={styles.image} />
 
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>

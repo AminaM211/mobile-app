@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
 
 const Finder = ({ navigation }) => {
+    {/* navigatie naar de productenpagina, blog, wishlist en cart */}
     return (
         <ImageBackground
-            source={require('../assets/bg.png')} // Replace with your background image path
+            source={require('../assets/bg.png')}
             style={styles.background}
         >
         <Text style={styles.h1}>Welcome</Text>
-
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}

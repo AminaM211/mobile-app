@@ -9,10 +9,10 @@ const categoryNames = {
   "68415e42bdf40cb91bb04a6d": "Caffeinated",
 };
 
-const HomeScreen = ({ navigation }) => {
-  const [products, setProducts] = useState([]);
+const HomeScreen = ({ navigation }) => { 
+  const [products, setProducts] = useState([]); //Houdt  lijst van producten bij die op het homescreen komen
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); //Houdt bij wat de gebruiker intypt in de zoekbalk
   const [sortOption, setSortOption] = useState('price-asc'); // default sort by price ascending
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);

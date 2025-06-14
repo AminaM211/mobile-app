@@ -10,7 +10,7 @@ const Wishlist = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState(getWishlist());
 
-  useFocusEffect(
+  useFocusEffect( // useFocusEffect zorgt ervoor dat de wishlist wordt bijgewerkt wanneer de gebruiker terugkeert naar deze pagina
     React.useCallback(() => {
       setItems([...getWishlist()]);
     }, [])
@@ -35,8 +35,12 @@ const Wishlist = () => {
     <ScrollView contentContainerStyle={styles.container}>
       {items.map(item => (
         <View key={item.id} style={styles.card}>
-        <TouchableOpacity onPress={() => navigation.navigate('Product Details', item)}>
-        {item.image?.uri && <Image source={item.image} style={styles.img} />}
+        <TouchableOpacity onPress={() => navigation.navigate('Product Details', {item})}>
+        <Image
+              source={item.image ? item.image : require('../assets/blue-package.png')}
+              style={styles.img}
+            />
+
         </TouchableOpacity>
         <Text style={styles.title}>{item.title}</Text>
           

@@ -1,13 +1,10 @@
-// BlogDetails.js
-import React, { useEffect, useState } from 'react';
-import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
-import BlogCard from '../components/BlogCard';
+import {ScrollView, Text, Image, StyleSheet} from 'react-native';
 
 
 const BlogDetailsScreen = ({ route }) => {
-  const { id, title, date, image, fullText } = route.params;  
-  const [loading, setLoading] = useState(true);
+  const { title, date, image, fullText } = route.params;  
 
+// { HTML tags wisselen met spaties/alinea's (</p> --> \n\n) }
 const cleanBody = fullText
         .replace(/<\/p>/g, '\n\n')
         .replace(/<[^>]+>/g, '')
@@ -32,7 +29,7 @@ const styles = StyleSheet.create({
 },
   content:{ 
     padding: 24, 
-    paddingBottom: 40 
+    paddingBottom: 20 
 },
   image:     
   {
