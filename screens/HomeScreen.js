@@ -136,9 +136,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'left',
     gap: 10,
     marginBottom: 100,
+    marginLeft: 10,
   },
   title: {
     fontSize: 28,
