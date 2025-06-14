@@ -50,7 +50,7 @@ const ProductDetails = ({ route }) => {
         id,
         title,
         price: parseFloat(price),
-        image: { uri: image.url },
+        image: image?.url ? { uri: image.url } : image,
       });
     }
     setLiked(!liked);

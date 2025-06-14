@@ -1,6 +1,5 @@
-// screens/Wishlist.js
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { getWishlist, removeFromWishlist } from '../components/WishlistItems';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -32,28 +31,27 @@ const Wishlist = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {items.map(item => (
-        <View key={item.id} style={styles.card}>
-        <TouchableOpacity onPress={() => navigation.navigate('Product Details', {item})}>
-        <Image
-              source={item.image ? item.image : require('../assets/blue-package.png')}
-              style={styles.img}
-            />
-
-        </TouchableOpacity>
-        <Text style={styles.title}>{item.title}</Text>
-          
-
-          <TouchableOpacity onPress={() => {
-            removeFromWishlist(item.id);
-            setItems([...getWishlist()]);
-          }}>
+    <FlatList
+      style={styles.container}
+      numColumns={2}
+      data={items}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <View style={styles.card}>
+          {console.log('Wishlist image:', item.image)}
+          <Image source={item.image} style={styles.img} />
+          <Text style={styles.title}>{item.title}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              removeFromWishlist(item.id);
+              setItems([...getWishlist()]);
+            }}
+          >
             <Text style={styles.remove}>×</Text>
           </TouchableOpacity>
         </View>
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 };
 
@@ -81,20 +79,17 @@ const styles = StyleSheet.create({
 
   container: { 
     padding: 20, 
-    flex: 1,
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    gap: 10,
   },
   card: {
-    marginBottom: 5,
+    margin: 10,
     backgroundColor: '#fff',
     height: 240,
     borderRadius: 8,
     padding: 12,
     elevation: 2,
-    width: 170,
+    width: "45%",
   },
+
   img: { 
     width: 150, 
     height: 180, 

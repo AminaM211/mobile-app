@@ -38,7 +38,7 @@ const ProductCard = ({ id, title, smallDescription, price, image, onPress, showB
           id,
           title,
           price: parseFloat(price),
-          image: { uri: image.url },
+          image: image?.url ? { uri: image.url } : image,
         });
         toast('Added to wishlist');
       }
