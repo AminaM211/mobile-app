@@ -4,20 +4,19 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Platform, ToastAndroid
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  addToWishlist,
-  removeFromWishlist,
-  getWishlist,
-  addToCart,
-} from '../components/WishlistItems';
+import { addToWishlist, removeFromWishlist, getWishlist, addToCart} from '../components/WishlistItems';
 
 
-const toast = (message) => {
-  if (Platform.OS === 'android') {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  } else {
-    Alert.alert(message);
-  }
+const toast = (navigation) => {
+    Alert.alert(
+      'Added to your cart',       
+      '',                        
+      [
+        { text: 'OK!', style: 'cancel' },             
+        { text: 'Go to cart', onPress: () => navigation.navigate('Cart') },
+      ],
+      { cancelable: true }
+    );
 };
 
 const ProductDetails = ({ route }) => {
@@ -35,13 +34,12 @@ const ProductDetails = ({ route }) => {
 
   const onAddCart = () => {
     addToCart({ id, title, price: +price, image: { uri: image.url }, smallDescription });
-    navigation.navigate('Cart');
+    toast(navigation);
   };
   
   const toggleWishlist = () => {
     if (liked) {
       removeFromWishlist(id); 
-      toast('Removed from wishlist');
     } else {
       addToWishlist({
         id,
@@ -49,7 +47,6 @@ const ProductDetails = ({ route }) => {
         price: parseFloat(price),
         image: { uri: image.url },
       });
-      toast('Added to wishlist');
     }
     setLiked(!liked);
   };

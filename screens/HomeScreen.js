@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput } from 'react-native';
 import ProductCard from '../components/ProductCard';
 import DropDownPicker from 'react-native-dropdown-picker';
-
-const toast = message => {
-  if (Platform.OS === 'android') {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  } else {
-    Alert.alert(message);
-  }
-};
 
 const categoryNames = {
   "": "Alle Categorieën",
@@ -70,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Alle Producten</Text>
+      {/* <Text style={styles.title}>Alle Producten</Text> */}
       <TextInput
         style={styles.search}
         placeholder="Zoek producten..."
@@ -83,10 +75,10 @@ const HomeScreen = ({ navigation }) => {
           value={sortOption}
           listMode="MODAL"
           items={[
-            { label: 'Prijs laag naar hoog', value: 'price-asc' },
-            { label: 'Prijs hoog naar laag', value: 'price-desc' },
-            { label: 'Sorteer van A-Z', value: 'name-asc' },
-            { label: 'Sorteer van Z-A', value: 'name-desc' },
+            { label: 'Ascending price', value: 'price-asc' },
+            { label: 'Descending price', value: 'price-desc' },
+            { label: 'Sort from A-Z', value: 'name-asc' },
+            { label: 'Sort from Z-A', value: 'name-desc' },
           ]}
           setOpen={setSortDropdownOpen}
           setValue={setSortOption}
@@ -97,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
           value={selectedCategory}
           listMode="MODAL"
           items={[
-            { label: 'Alles in Koffie', value: '' },
+            { label: 'All', value: '' },
             ...[...new Set(products.map((p) => p.category))].map((category) => ({
               label: category,
               value: category,
@@ -167,7 +159,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   pickerCard: {
     flexDirection: 'row',

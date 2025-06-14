@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, View, ScrollView, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BlogCard from '../components/BlogCard';
 
@@ -8,7 +8,7 @@ const BlogScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [selectedCategory, setCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOption, setSortOption] = useState('date-desc'); // default: nieuwste eerst
+  const [sortOption, setSortOption] = useState('date-desc'); 
   const [catOpen, setCatOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -66,8 +66,8 @@ const BlogScreen = ({ navigation }) => {
           value={sortOption}
           listMode="MODAL"
           items={[
-            { label: 'Nieuwste eerst', value: 'date-desc' },
-            { label: 'Oudste eerst',   value: 'date-asc'  }
+            { label: 'Newest first', value: 'date-desc' },
+            { label: 'Oldest first',   value: 'date-asc'  }
           ]}
           setOpen={setSortOpen}
           setValue={setSortOption}
@@ -89,9 +89,9 @@ const BlogScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.row}>
-        {sorted.map(post => (
+        {sorted.map((post, index) => (
           <BlogCard
-            key={post.id}
+            key={post.id || index}
             title={post.title}
             description={post.description}
             date={post.date}
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: 40,
     paddingHorizontal: 20,
+    paddingBottom: 100,
   },
   scrollContainer: { paddingBottom: 40 },
   title: {

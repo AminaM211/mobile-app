@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   date:      { fontSize: 14, color: '#666', marginBottom: 20 },
   title:     { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  summary:   { fontSize: 16, marginBottom: 20, lineHeight: 22 },
+  summary:   { fontSize: 16, marginBottom: 0, lineHeight: 22 },
   body:      { fontSize: 16, lineHeight: 24 },
 });
 
