@@ -24,9 +24,13 @@ const ProductDetails = ({ route }) => {
   const { id, title, description, smallDescription, price, image } = route.params;
   const [quantity, setQuantity] = useState(1);
 
-  const increase = () => setQuantity(q => q + 1);
-  const decrease = () => setQuantity(q => (q > 1 ? q - 1 : q));
-  const total    = parseFloat(price) * quantity;
+  const increase = () => setQuantity(quantity + 1);
+  const decrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    };
+  };
+  const total = price * quantity;
 
   // functie om het product toe te voegen aan de winkelwagen
   // en de toast te tonen
